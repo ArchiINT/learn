@@ -1,0 +1,56 @@
+GET api/v1/files/file_id
+    Auth: JWT
+    Returns: id, name, size, uploadet_at, owner_id
+
+GET api/v1/files
+    Auth: JWT
+    Returns: list/array{id, name, size, uploadet_at, owner_id}
+
+GET api/v1/files/file_id/download
+    Auth: JWT
+    Returns: File bytes (application/octet-stream)
+
+POST api/v1/files/upload
+    BODY: file
+    Auth: JWT
+    Returns: id, name, size, uploadet_at, owner_id
+
+PUT api/v1/files/file_id
+    BODY: file
+    send_to_bakcend: name
+    Auth: JWT
+    Returns: id, name, size, uploadet_at, owner_id
+
+DELETE api/v1/files/file_id
+    Auth: JWT
+    Returns: None or Status OK, NOT OK
+
+//////////////////////////
+        USER
+//////////////////////////
+
+GET api/v1/users/user_id
+    Auth: JWT
+    Returns: id, name, email
+
+GET api/v1/users
+    Auth: JWT
+    Returns: list/array{id, name, email}
+
+POST api/v1/auth/register
+    BODY: JSON{name, email, password}
+    Returns: access_token, token_type
+
+POST api/v1/auth/login
+    BODY: JSON{Email, Password}
+    Returns: access_token, token_type
+
+PUT api/v1/users/user_id
+    BODY: json{name/email}
+    Auth: JWT
+    Returns: id, name, email
+DELETE api/v1/users/user_id
+    Auth: JWT
+    Returns: None or Status OK, NOT OK
+
+
