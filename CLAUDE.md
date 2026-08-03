@@ -36,7 +36,7 @@ This is a personal learning environment for a student developer. Read this file 
 
 ## Active projects
 
-### 1. Cloud File Storage — FastAPI (`/home/vi/learn/file_server/`)
+### 1. Cloud File Storage — FastAPI (`/home/soku/learn/file_server/`)
 Status: in progress
 
 Stack: FastAPI, SQLAlchemy, PostgreSQL, JWT, Docker (later)
@@ -54,7 +54,7 @@ Next steps:
 
 ---
 
-### 2. Low-Level Development (`/home/vi/learn/lowlevel/`)
+### 2. Low-Level Development (`/home/soku/learn/lowlevel/`)
 Status: Phase 1 in progress
 
 Goal: Systems Programming → Embedded Linux → Bare Metal → Embedded Security
@@ -67,7 +67,7 @@ lowlevel/
 ├── 03_linux_internals/
 ├── 04_embedded_linux/
 ├── 05_bare_metal/
-├── 06_security/            ← parallel security track (starts after Phase 1)
+├── 06_security/            ← parallel security track (STARTED — S1 in progress)
 └── notes/
 ```
 
@@ -87,35 +87,29 @@ lowlevel/
 - Valgrind — memory leak detection
 - Double pointers (`**`) — pointer to pointer, 8-byte size on 64-bit, hex address arithmetic
 - `struct` + struct pointers — `list_01.c`: linked list, `->`, prepend pattern, correct free loop, `malloc==NULL` check, Valgrind output analysis
+- Function pointers — `pointers_03.c`: syntax `int (*fp)(int,int)`, array of function pointers `ops[3]`, dispatch via `apply()`. Works.
+- `calloc` / `realloc` — `memory_02.c`: minimal `Vector` struct (`data`/`size`/`capacity`), `push` with auto-resize ×2, `get`, `free`. Works. Open follow-ups (not yet fixed): `vec_get` returns `int` so it can't distinguish an error from a valid value `1` (should return status + `int *out`); leftover debug `printf` in `push`.
 
 #### In Progress / Next 🔲
 
-**1. Function Pointers** (`pointers_03.c`)
-- Syntax (provide upfront — non-guessable): `return_type (*name)(arg_types)`
-- Task: write a `calculator` that receives two ints and a function pointer, dispatches to add/subtract/multiply/divide. Then use it with `qsort`-style callback.
-- Real-world: callbacks in event loops, plugin systems, vtables in C OOP patterns
+**← CURRENT: item 1 below (Strings as `char *`, `strings_01.c`) — not started yet.**
 
-**2. `calloc` / `realloc`** (`memory_02.c`)
-- Differences from `malloc`: zeroing, size*count overflow risk
-- Task: implement a dynamic array (like a minimal `vector`) — push, get, resize automatically when capacity exceeded
-- Real-world: virtually every container in C uses this pattern
-
-**3. Strings as `char *`** (`strings_01.c`)
+**1. Strings as `char *`** (`strings_01.c`)
 - No `string.h` — implement `my_strlen`, `my_strcpy`, `my_strcat` manually
 - Understand null terminator, buffer overruns (this directly connects to security phase)
 - Task: write a function that splits a `char *` by delimiter and returns `char **`
 
-**4. `const` with pointers**
+**2. `const` with pointers**
 - `const int *p` vs `int * const p` vs `const int * const p`
 - Why it matters: API contracts, compiler optimizations, read-only memory sections
 - Task: write a function that takes a read-only buffer and must not accidentally modify it
 
-**5. Multi-file projects + header guards**
+**3. Multi-file projects + header guards**
 - Split a linked list into `list.h` / `list.c` / `main.c`
 - Understand `#ifndef` / `#pragma once`, forward declarations, linking with Make
 - Real-world: every non-trivial C project is multi-file; embedded codebases are always modular
 
-**6. Stack vs Heap — deep dive**
+**4. Stack vs Heap — deep dive**
 - Draw memory layout: text, data, bss, heap, stack
 - Understand frame layout, local variable lifetimes, stack overflow
 - Task: use GDB to inspect the stack frame of a recursive function, observe `rbp`/`rsp`
@@ -170,6 +164,16 @@ Topics (after Phase 1):
 **Parallel track — begins after Phase 1 completion. Every task must be hands-on.**
 
 #### S1 — Memory Corruption & Exploitation Fundamentals
+
+> **Status (2026-08-03):** In progress in `06_security/S1_memory/`. Pre-cursor task
+> "process memory introspection" (reading another process's memory via `/proc/<pid>/mem`)
+> — **easy stage DONE**: `victim.c` (malloc buffer, leaks address via `%p`, blocks on
+> 2nd `fgets`) + `reader.c` (PID+addr → `open`/`lseek`/`read`). **Hardcore stage PENDING**:
+> reader parses `/proc/<pid>/maps`, finds `[heap]`, scans region with `memmem` for the
+> secret. `ptrace_scope=1` on this machine → run reader under `sudo`. Full brief:
+> `06_security/S1_memory/TASK_process_memory_read.md`. Currently PAUSED — student chose
+> to return to Phase 1 (strings) first. Pending comprehension question: why must the
+> victim hang instead of exiting `main`.
 
 1. **Buffer overflow basics** — write a deliberately vulnerable C program, exploit it locally
    - Understand stack layout, return address overwrite, `NX` / `ASLR` / stack canaries
