@@ -18,7 +18,7 @@ int main(){
         first = tmp;
     }
 
-    for (tmp = first; !tmp; tmp = tmp->next) {
+    for (tmp = first; tmp; tmp = tmp->next) {
         printf("%d\n",tmp->data);
     }
 

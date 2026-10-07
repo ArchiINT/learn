@@ -92,7 +92,7 @@ lowlevel/
 
 #### In Progress / Next 🔲
 
-**← CURRENT: item 1 below (Strings as `char *`, `strings_01.c`) — not started yet.**
+**← CURRENT: item 2 below (`const` with pointers) — NEXT.** Item 1 (Strings, `string_01.c`) DONE 2026-09-30: `my_strlen`/`my_strcpy`/`my_strcat`, `my_strsplit` (out-param `count`, NULL-terminated, empty tokens kept), `free_split` (NULL-safe). Passes ASan + edge cases (`"a,,b"`, `",start"`, `"end,"`, `""`, `"nodelim"`). Details in memory `lowlevel-progress`.
 
 **1. Strings as `char *`** (`strings_01.c`)
 - No `string.h` — implement `my_strlen`, `my_strcpy`, `my_strcat` manually
@@ -122,6 +122,9 @@ Topics (after Phase 1):
 
 1. **Processes** — `fork`, `exec`, `wait`, `exit` — write a minimal shell that runs commands
 2. **File descriptors (raw syscalls)** — `open`, `read`, `write`, `close` — no `stdio.h`, just syscalls
+   - **Student-requested (2026-10-01): implement `my_fread` on top of raw `read()`** — understand what
+     `stdio.h` buffering actually does, why `fread` has the `(size, nmemb)` split, why short reads happen,
+     and how `FILE *` wraps a file descriptor. Do this right after the `const` topic if momentum allows.
 3. **Signals** — `sigaction`, custom handlers, `SIGSEGV` forensics
 4. **Pipes** — `pipe()`, redirect stdout of one process to stdin of another
 5. **IPC** — shared memory (`shmget`/`mmap`), message queues, semaphores — implement a producer/consumer
